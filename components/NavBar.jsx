@@ -6,7 +6,8 @@ import Link from "next/link";
 import Image from "next/image";
 
 const NavBar = () => {
-  const iSUserLogedIn = true;
+  const {data :session} = useSession();
+
   const [toggleDropDown, settoggleDropDown] = useState(false);
 
   const [providers, setProviders] = useState(null);
@@ -33,7 +34,7 @@ const NavBar = () => {
       {/* Desktop Navigation */}
 
       <div className="sm:flex hidden">
-        {iSUserLogedIn ? (
+        {session?.user ? (
           <div className="flex flex-center gap-3">
             <Link href="/create-prompts" className="black_btn">
               Create Post
@@ -47,11 +48,11 @@ const NavBar = () => {
             </button>
             <Link href="/profile">
               <Image
-                src="/assets/images/logo.svg"
+                src={session?.user.image}
                 alt="profile"
                 width={40}
                 height={40}
-                className="object-contain"
+                className="object-contain rounded-full shadow-sm"
               />
             </Link>
           </div>
@@ -74,14 +75,14 @@ const NavBar = () => {
 
       {/* Mobile Navigation */}
       <div className="sm:hidden flex relative">
-        {iSUserLogedIn ? (
-          <div className="flex">
+        {session?.user ? (
+          <div className="flex ">
             <Image
-              src="/assets/images/logo.svg"
+              src={session?.user.image}
               alt="profile"
               width={40}
               height={40}
-              className="object-contain"
+              className="object-contain rounded-full shadow-sm cursor-pointer"
               onClick={() => {
                 settoggleDropDown((prev) => !prev);
               }}
