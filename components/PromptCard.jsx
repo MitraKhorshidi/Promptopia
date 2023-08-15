@@ -6,12 +6,9 @@ const PromptCard = ({ post, changeTagHandler, deleteHandler, editHandler }) => {
   const [isCopied, setIsCopied] = useState(false);
 
   const handleCopy = () => {
-    console.log("copy", isCopied);
-
     setIsCopied(true);
-    console.log("copy", isCopied);
     navigator.clipboard.writeText(post.prompt);
-    setTimeout(setIsCopied(false), 3000);
+    setTimeout(() => setIsCopied(false), 3000);
   };
 
   return (
@@ -39,14 +36,13 @@ const PromptCard = ({ post, changeTagHandler, deleteHandler, editHandler }) => {
             height={20}
             width={20}
             className="object-contain"
-            
           />
         </div>
       </div>
       <p className="text-justify text-gray-700 font-satoshi">{post.prompt}</p>
       <p
         className="text-sm blue_gradient font-inter self-start my-2 cursor-pointer"
-        onClick={()=>changeTagHandler && changeTagHandler(tag)}
+        onClick={() => changeTagHandler && changeTagHandler(tag)}
       >
         {post.tag}
       </p>
