@@ -3,7 +3,7 @@ import React from "react";
 
 const Form = ({ type, post, setPost, submitting, handleSubmit }) => {
   return (
-    <section className="w-full">
+    <section className="w-full m-2 mb-10">
       <h1 className="head_text text-left blue_gradient">{type} Post</h1>
       <p className="desc">
         {type} and share amazing prompts with the world , and let your
