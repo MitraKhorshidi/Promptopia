@@ -1,6 +1,7 @@
 "use client";
 import { useState } from "react";
 import Image from "next/image";
+import { useSession } from "next-auth/react";
 
 const PromptCard = ({ post, changeTagHandler, deleteHandler, editHandler }) => {
   const [isCopied, setIsCopied] = useState(false);
@@ -23,10 +24,10 @@ const PromptCard = ({ post, changeTagHandler, deleteHandler, editHandler }) => {
         />
         <div className="flex flex-col justify-center items-start gap-1">
           <h3 className="font-semibold font-satoshi text-gray-800">
-            Mitra Khorshidi
+            {post.creator?.userName}
           </h3>
           <p className="text-gray-900 font-inter text-sm">
-            mitrakhorshidi@gmail.com
+            {post.creator?.email}
           </p>
         </div>
         <div onClick={handleCopy}>
