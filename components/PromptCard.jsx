@@ -2,9 +2,12 @@
 import { useState } from "react";
 import Image from "next/image";
 import { useSession } from "next-auth/react";
+import { usePathname } from "next/navigation";
 
-const PromptCard = ({ post, changeTagHandler, deleteHandler, editHandler }) => {
+const PromptCard = ({ post, changeTagHandler, handleDelete, handleEdit }) => {
   const [isCopied, setIsCopied] = useState(false);
+  const {data : session} = useSession();
+  const pathName = usePathname();
 
   const handleCopy = () => {
     setIsCopied(true);
@@ -13,7 +16,7 @@ const PromptCard = ({ post, changeTagHandler, deleteHandler, editHandler }) => {
   };
 
   return (
-    <div className="prompt_card flex flex-col justify-center">
+    <div className="prompt_card flex flex-col justify-center gap-2">
       <div className="flex flex-row gap-5 mb-5">
         <Image
           src="/assets/images/logo.svg"
@@ -45,8 +48,13 @@ const PromptCard = ({ post, changeTagHandler, deleteHandler, editHandler }) => {
         className="text-sm blue_gradient font-inter self-start my-2 cursor-pointer"
         onClick={() => changeTagHandler && changeTagHandler(tag)}
       >
-        {post.tag}
+        #{post.tag}
       </p>
+      {(pathName === '/profile' & session?.user.id === post.creator._id) && (
+      <div className="flex flex-center gap-6 border-t border-gary-100 pt-2">
+          <button className="font-inter text-sm cursor-pointer green_gradient" onClick={handleEdit}>Edit</button>
+          <button className="font-inter text-sm cursor-pointer orange_gradinet" onClick={handleDelete}>Delete</button>
+      </div>)}
     </div>
   );
 };
