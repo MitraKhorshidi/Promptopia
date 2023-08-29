@@ -3,10 +3,11 @@ import { useState } from "react";
 import Image from "next/image";
 import { useSession } from "next-auth/react";
 import { usePathname } from "next/navigation";
+import Link from "next/link";
 
 const PromptCard = ({ post, changeTagHandler, handleDelete, handleEdit }) => {
   const [isCopied, setIsCopied] = useState(false);
-  const {data : session} = useSession();
+  const { data: session } = useSession();
   const pathName = usePathname();
 
   const handleCopy = () => {
@@ -18,20 +19,27 @@ const PromptCard = ({ post, changeTagHandler, handleDelete, handleEdit }) => {
   return (
     <div className="prompt_card flex flex-col justify-center gap-2">
       <div className="flex flex-row gap-5 mb-5">
-        <Image
-          src="/assets/images/logo.svg"
-          alt="profile"
-          width={40}
-          height={40}
-          className="object-contain rounded-full"
-        />
+        <Link href={`/profile/${post.creator._id}?name=${post.creator.userName}`}>
+          <Image
+            src={post.creator?.image}
+            alt="profile"
+            width={40}
+            height={40}
+            className="object-contain rounded-full"
+          />
+        </Link>
+
         <div className="flex flex-col justify-center items-start gap-1">
-          <h3 className="font-semibold font-satoshi text-gray-800">
-            {post.creator?.userName}
-          </h3>
-          <p className="text-gray-900 font-inter text-sm">
-            {post.creator?.email}
-          </p>
+          <Link href={`/profile/${post.creator._id}?name=${post.creator.userName}`}>
+            <h3 className="font-semibold font-satoshi text-gray-800">
+              {post.creator?.userName}
+            </h3>
+          </Link>
+          <Link href={`/profile/${post.creator._id}?name=${post.creator.userName}`}>
+            <p className="text-gray-900 font-inter text-sm">
+              {post.creator?.email}
+            </p>
+          </Link>
         </div>
         <div onClick={handleCopy}>
           <Image
@@ -50,11 +58,22 @@ const PromptCard = ({ post, changeTagHandler, handleDelete, handleEdit }) => {
       >
         #{post.tag}
       </p>
-      {(pathName === '/profile' & session?.user.id === post.creator._id) && (
-      <div className="flex flex-center gap-6 border-t border-gary-100 pt-2">
-          <button className="font-inter text-sm cursor-pointer green_gradient" onClick={handleEdit}>Edit</button>
-          <button className="font-inter text-sm cursor-pointer orange_gradinet" onClick={handleDelete}>Delete</button>
-      </div>)}
+      {(pathName === "/profile") && (session?.user.id === post.creator._id) && (
+        <div className="flex flex-center gap-6 border-t border-gary-100 pt-2">
+          <button
+            className="font-inter text-sm cursor-pointer green_gradient"
+            onClick={handleEdit}
+          >
+            Edit
+          </button>
+          <button
+            className="font-inter text-sm cursor-pointer orange_gradinet"
+            onClick={handleDelete}
+          >
+            Delete
+          </button>
+        </div>
+      )}
     </div>
   );
 };
